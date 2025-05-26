@@ -137,10 +137,73 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 
 ---
 
+## 왜 STK 토큰은 ERC-20인가?
+
+### STK는 **대체 가능한 토큰(FT, Fungible Token)**
+
+- Ex. 1 STK는 누구에게나 동일한 가치로 작용함
+- 거래소 상장, 지갑 관리, DeFi 연동 등을 고려하면 ERC-20이 표준
+
+### ERC-1155는 주로 NFT(뱃지처럼 고유한 개체)를 누적 발급할 때 유리
+
+- STK는 '뱃지처럼 ID별 누적 추적'이 필요한 구조가 아니기 때문에 ERC-20이 적합
+
+> 따라서 STK는 ERC-20으로 설계하고 배지는 ERC-1155로 설계하는 것이 가장 적합
+
+---
+
+## 스마트 컨트랙트 설계 정리
+
+### STKToken.sol (ERC-20 기반)
+
+| 기능                                | 설명                          |
+| ----------------------------------- | ----------------------------- |
+| `mint(address to, uint256 amount)`  | 보상용 토큰 발행 (owner only) |
+| `transferFrom(owner, user, amount)` | owner가 사용자에게 보상 지급  |
+| `totalSupply()`                     | 총 발행량 조회                |
+| `balanceOf(address user)`           | 잔고 조회                     |
+| `allowance(owner, user)`            | 사용 가능 한도 조회           |
+| `approve(spender, amount)`          | STK 지급을 위한 권한 위임     |
+| `owner()`                           | 토큰 소유자 주소 확인         |
+
+### BadgeNFT.sol (ERC-1155 기반)
+
+| 기능                                                     | 설명                     |
+| -------------------------------------------------------- | ------------------------ |
+| `mintBadge(address to, uint256 badgeId, uint256 amount)` | 등급 배지 발급           |
+| `getBadgeBalance(address user, uint256 badgeId)`         | 특정 배지 수량 확인      |
+| `badgeHistory(address user)`                             | 전체 배지 발급 이력 확인 |
+| `setURI(string memory newuri)`                           | 배지 메타데이터 URI 설정 |
+
+### Board.sol (중앙 관리 컨트랙트)
+
+| 기능                                        | 설명                                     |
+| ------------------------------------------- | ---------------------------------------- |
+| `postMessage(string title, string content)` | 글 작성 (msg.value == 0.5 ETH 필수)      |
+| `getAllPosts()`                             | 전체 글 목록 확인                        |
+| `getUserInfo(address user)`                 | 사용자의 등급, 글 수, 보상, 배지 등 확인 |
+| `isMember(address user)`                    | 멤버 여부 조회                           |
+| `registerMember(address user)`              | 관리자 전용 멤버 등록 기능               |
+| `calculateLevel(address user)`              | 등급 자동 판단 로직                      |
+| `rewardUser(address user)`                  | 등급에 따라 STK 지급                     |
+| `issueBadge(address user)`                  | 등급 만족 시 배지 발급 (BadgeNFT 호출)   |
+
+---
+
 ## 디렉토리 구조
 
 ```bash
 blockchain-toy-project/
+├── blockchain/
+│   ├── contracts/
+│   │   ├── STKToken.sol          # STK 토큰
+│   │   ├── BadgeNFT.sol          # 배지 NFT
+│   │   └── Board.sol           # 게시판 기능 및 보상 관리 (사용자+관리자)
+│   ├── migrations/
+│   ├── test/
+│   ├── build/
+│   └── truffle-config.js
+│
 ├── project-ui/
 │   ├── public/
 │   ├── src/
@@ -152,16 +215,6 @@ blockchain-toy-project/
 │   │   ├── abi/                  # Truffle 빌드된 ABI JSON 복사본
 │   │   └── App.js
 │   └── package.json
-│
-├── blockchain/
-│   ├── contracts/
-│   │   ├── STKToken.sol          # STK 토큰
-│   │   ├── BadgeNFT.sol          # 배지 NFT
-│   │   └── BoardManager.sol      # 게시판 기능 및 보상 관리
-│   ├── migrations/
-│   ├── test/
-│   ├── build/
-│   └── truffle-config.js
 │
 ├── .env
 ├── README.md
