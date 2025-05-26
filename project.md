@@ -90,7 +90,7 @@
 
 ## ERC-1155에 대한 이해와 선택 이유
 
-### ERC-1155?
+### 왜 NFT 배지는 ERC-1155을 사용하는가??
 
 ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Standard)**
 기존의 ERC-20은 대체 가능한 토큰(FT, Fungible Token), ERC-721은 대체 불가능한 토큰(NFT, Non-Fungible Token)을 위한 것
@@ -137,12 +137,13 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 
 ---
 
-## 왜 STK 토큰은 ERC-20인가?
+## 왜 STK 토큰은 ERC-20을 사용하는가?
 
 ### STK는 **대체 가능한 토큰(FT, Fungible Token)**
 
 - Ex. 1 STK는 누구에게나 동일한 가치로 작용함
 - 거래소 상장, 지갑 관리, DeFi 연동 등을 고려하면 ERC-20이 표준
+- 해당 프로젝트는 DAO 확장성을 고려하고 있으며 DAO 툴 대부분이 ERC-20 기반임
 
 ### ERC-1155는 주로 NFT(뱃지처럼 고유한 개체)를 누적 발급할 때 유리
 
@@ -152,7 +153,7 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 
 ---
 
-## 스마트 컨트랙트 설계 정리
+## 스마트 컨트랙트 필요 함수 정리
 
 ### STKToken.sol (ERC-20 기반)
 
