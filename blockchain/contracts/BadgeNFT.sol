@@ -11,6 +11,7 @@ contract BadgeNFT is ERC1155, Ownable {
         )
         Ownable(msg.sender)
     {}
+    // 각 ID당 만들어 줘야 하나?
 
     // 등급 배지 발급
     function mintBadge(
