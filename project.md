@@ -90,7 +90,7 @@
 
 ## ERC-1155에 대한 이해와 선택 이유
 
-### ERC-1155?
+### 왜 NFT 배지는 ERC-1155을 사용하는가??
 
 ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Standard)**
 기존의 ERC-20은 대체 가능한 토큰(FT, Fungible Token), ERC-721은 대체 불가능한 토큰(NFT, Non-Fungible Token)을 위한 것
@@ -137,10 +137,36 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 
 ---
 
+## 왜 STK 토큰은 ERC-20을 사용하는가?
+
+### STK는 **대체 가능한 토큰(FT, Fungible Token)**
+
+- Ex. 1 STK는 누구에게나 동일한 가치로 작용함
+- 거래소 상장, 지갑 관리, DeFi 연동 등을 고려하면 ERC-20이 표준
+- 해당 프로젝트는 DAO 확장성을 고려하고 있으며 DAO 툴 대부분이 ERC-20 기반임
+
+### ERC-1155는 주로 NFT(뱃지처럼 고유한 개체)를 누적 발급할 때 유리
+
+- STK는 '뱃지처럼 ID별 누적 추적'이 필요한 구조가 아니기 때문에 ERC-20이 적합
+
+> 따라서 STK는 ERC-20으로 설계하고 배지는 ERC-1155로 설계하는 것이 가장 적합
+
+---
+
 ## 디렉토리 구조
 
 ```bash
 blockchain-toy-project/
+├── blockchain/
+│   ├── contracts/
+│   │   ├── STKToken.sol          # STK 토큰
+│   │   ├── BadgeNFT.sol          # 배지 NFT
+│   │   └── Board.sol           # 게시판 기능 및 보상 관리 (사용자+관리자)
+│   ├── migrations/
+│   ├── test/
+│   ├── build/
+│   └── truffle-config.js
+│
 ├── project-ui/
 │   ├── public/
 │   ├── src/
@@ -152,16 +178,6 @@ blockchain-toy-project/
 │   │   ├── abi/                  # Truffle 빌드된 ABI JSON 복사본
 │   │   └── App.js
 │   └── package.json
-│
-├── blockchain/
-│   ├── contracts/
-│   │   ├── STKToken.sol          # STK 토큰
-│   │   ├── BadgeNFT.sol          # 배지 NFT
-│   │   └── BoardManager.sol      # 게시판 기능 및 보상 관리
-│   ├── migrations/
-│   ├── test/
-│   ├── build/
-│   └── truffle-config.js
 │
 ├── .env
 ├── README.md
