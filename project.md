@@ -153,44 +153,6 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 
 ---
 
-## 스마트 컨트랙트 필요 함수 정리
-
-### STKToken.sol (ERC-20 기반)
-
-| 기능                                | 설명                          |
-| ----------------------------------- | ----------------------------- |
-| `mint(address to, uint256 amount)`  | 보상용 토큰 발행 (owner only) |
-| `transferFrom(owner, user, amount)` | owner가 사용자에게 보상 지급  |
-| `totalSupply()`                     | 총 발행량 조회                |
-| `balanceOf(address user)`           | 잔고 조회                     |
-| `allowance(owner, user)`            | 사용 가능 한도 조회           |
-| `approve(spender, amount)`          | STK 지급을 위한 권한 위임     |
-| `owner()`                           | 토큰 소유자 주소 확인         |
-
-### BadgeNFT.sol (ERC-1155 기반)
-
-| 기능                                                     | 설명                     |
-| -------------------------------------------------------- | ------------------------ |
-| `mintBadge(address to, uint256 badgeId, uint256 amount)` | 등급 배지 발급           |
-| `getBadgeBalance(address user, uint256 badgeId)`         | 특정 배지 수량 확인      |
-| `badgeHistory(address user)`                             | 전체 배지 발급 이력 확인 |
-| `setURI(string memory newuri)`                           | 배지 메타데이터 URI 설정 |
-
-### Board.sol (중앙 관리 컨트랙트)
-
-| 기능                                        | 설명                                     |
-| ------------------------------------------- | ---------------------------------------- |
-| `postMessage(string title, string content)` | 글 작성 (msg.value == 0.5 ETH 필수)      |
-| `getAllPosts()`                             | 전체 글 목록 확인                        |
-| `getUserInfo(address user)`                 | 사용자의 등급, 글 수, 보상, 배지 등 확인 |
-| `isMember(address user)`                    | 멤버 여부 조회                           |
-| `registerMember(address user)`              | 관리자 전용 멤버 등록 기능               |
-| `calculateLevel(address user)`              | 등급 자동 판단 로직                      |
-| `rewardUser(address user)`                  | 등급에 따라 STK 지급                     |
-| `issueBadge(address user)`                  | 등급 만족 시 배지 발급 (BadgeNFT 호출)   |
-
----
-
 ## 디렉토리 구조
 
 ```bash
