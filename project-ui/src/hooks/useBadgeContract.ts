@@ -16,7 +16,7 @@ const useBadgeContract = (): UseBadgeContractResult => {
   const web3 = new Web3(window.ethereum); // web3 인스턴스 생성
 
   // 실제 배포된 STKToken CA
-  const BadgeAddress = "0xCf7B0CAAb68E18041cf3c9B3569B96363da95a23";
+  const BadgeAddress = "0x802CE0597154C1aF8863C2505211B7D84846BFca";
 
   // STKToken 컨트랙트 인스턴스 생성
   const BadgeContract = new web3.eth.Contract(

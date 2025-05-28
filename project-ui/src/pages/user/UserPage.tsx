@@ -2,6 +2,7 @@ import useConnectWallet from "../../hooks/useConnectWallet";
 import useBoardContract from "../../hooks/useBoardContract";
 import { StyledButton } from "../../components/Button.styled";
 import { useState } from "react";
+import Web3 from "web3";
 
 const UserPage = () => {
   const [myInfo, setMyInfo] = useState<InfoType | null>(null); // 내 정보
@@ -13,6 +14,13 @@ const UserPage = () => {
     grade: string;
     badgeBalances: string[];
   };
+  const [context, setContext] = useState(""); // 사용자 글 작성
+  const [postList, setPostList] = useState<PostType[]>([]); // 모든 작성 글
+  type PostType = {
+    content: string;
+    user: string;
+    timestamp: string;
+  };
 
   const { account, connectWallet } = useConnectWallet(); // 지갑 연결
   const { BoardContract } = useBoardContract(); // Board 컨트랙트 불러옴
@@ -21,13 +29,13 @@ const UserPage = () => {
     // 등급 정의
     switch (grade) {
       case "0":
-        return "일반회원";
+        return "일반회원(NOMAL)";
       case "1":
-        return "우수회원";
+        return "우수회원 (GOOD)";
       case "2":
-        return "최우수회원";
+        return "최우수회원 (BEST)";
       case "3":
-        return "MVP";
+        return "MVP회원 (EXCELLENT)";
       default:
         return;
     }
@@ -36,7 +44,7 @@ const UserPage = () => {
   // 내 정보 확인
   const checkMyInfo = async () => {
     if (!account || account === "0x...") {
-      alert("지갑 먼저 연결하세요.");
+      alert("지갑을 먼저 연결해주세요.");
       return;
     }
 
@@ -64,6 +72,64 @@ const UserPage = () => {
       setMyInfo(info);
     } catch (error) {
       console.log(`내 정보 불러오기 실패: ${error}`);
+    }
+  };
+
+  const post = async () => {
+    if (!account || account === "0x...") {
+      alert("지갑을 먼저 연결해주세요.");
+      return;
+    }
+
+    if (!context || context.trim() === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const web3 = new Web3(window.ethereum); // 인스턴스 생성
+
+      // 글 작성 시 0.5 ETH 보내야 됨
+      await BoardContract.methods
+        .postMessage(context.toString())
+        .send({ from: account, value: web3.utils.toWei("0.5", "ether") });
+      alert("글 등록 완료. 글 등록 보상을 확인해주세요.");
+    } catch (error) {
+      console.log(`글 작성 실패: ${error}`);
+    }
+  };
+
+  const allPost = async () => {
+    try {
+      console.log("dd");
+      const posts: PostType[] = [];
+      console.log("aaa");
+      const totalPosts = await BoardContract.methods.getPostCount().call(); // 총 글 개수
+      console.log("e");
+      console.log("totalPosts", totalPosts);
+
+      for (let i = 0; i < Number(totalPosts); i++) {
+        try {
+          const post = (await BoardContract.methods.getAllPosts(i).call()) as [
+            string, // content
+            string, // user
+            string // timestamp
+          ];
+          console.log(post);
+
+          posts.push({
+            content: post[0],
+            user: post[1],
+            timestamp: new Date(Number(post[2]) * 1000).toLocaleString(), // UNIX 타임 → 문자열
+          });
+        } catch (error) {
+          console.log(`글 ${i} 조회 실패: ${error}`);
+        }
+      }
+
+      setPostList(posts); // 상태 업데이트
+    } catch (error) {
+      console.log("글 목록 전체 불러오기 실패:", error);
     }
   };
 
@@ -95,6 +161,29 @@ const UserPage = () => {
             </p>
           </div>
         )}
+      </div>
+      <div>
+        <h2>글 작성</h2>
+        <input
+          type="text"
+          value={context}
+          onChange={(e) => setContext(e.target.value)}
+        />
+        <StyledButton onClick={post}>작성</StyledButton>
+      </div>
+      <div>
+        <h2>글 목록</h2>
+        <StyledButton onClick={allPost}>글 목록</StyledButton>
+        <ul>
+          {postList.map((post, index) => (
+            <li key={index}>
+              <p>내용: {post.content}</p>
+              <p>작성자: {post.user}</p>
+              <p>작성시간: {post.timestamp}</p>
+              <hr />
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
