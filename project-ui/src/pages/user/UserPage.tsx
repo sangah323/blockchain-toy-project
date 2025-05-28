@@ -94,6 +94,8 @@ const UserPage = () => {
         .postMessage(context.toString())
         .send({ from: account, value: web3.utils.toWei("0.5", "ether") });
       alert("글 등록 완료. 글 등록 보상을 확인해주세요.");
+      setContext(""); // input 초기화
+      checkMyInfo(); // 내 정보 업데이트
     } catch (error) {
       console.log(`글 작성 실패: ${error}`);
     }

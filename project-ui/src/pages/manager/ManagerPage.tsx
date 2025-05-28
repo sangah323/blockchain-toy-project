@@ -113,6 +113,7 @@ const ManagerPage = () => {
         .setMember(member.toLowerCase())
         .send({ from: account });
       alert("멤버 등록 완료");
+      setMember(""); // 멤버 등록 input 초기화
     } catch (error) {
       console.log(`멤버 등록 실패: ${error}`);
     }
@@ -146,7 +147,8 @@ const ManagerPage = () => {
         badgeBalances: result[5].map((n: any) => n.toString()),
       };
 
-      setUserInfo(info);
+      setUserInfo(info); // 사용자 정보 업데이트
+      setUser(""); // 사용자 검색 input 초기화
     } catch (error) {
       console.log(`내 정보 불러오기 실패: ${error}`);
     }
