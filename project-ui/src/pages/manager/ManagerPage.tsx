@@ -7,6 +7,16 @@ import { useState } from "react";
 
 const ManagerPage = () => {
   const [member, setMember] = useState(""); // 멤버 수동 등록
+  const [user, setUser] = useState(""); // 사용자 검색
+  const [userInfo, setUserInfo] = useState<InfoType | null>(null); // 사용자 정보
+  type InfoType = {
+    userAddress: string;
+    isMember: boolean;
+    numPosts: string;
+    totalReward: string;
+    grade: string;
+    badgeBalances: string[];
+  };
   const [postList, setPostList] = useState<PostType[]>([]); // 모든 작성 글
   type PostType = {
     content: string;
@@ -20,6 +30,22 @@ const ManagerPage = () => {
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
+
+  // 등급 정의
+  const getGradeLabel = (grade: string) => {
+    switch (grade) {
+      case "0":
+        return "일반회원(NOMAL)";
+      case "1":
+        return "우수회원 (GOOD)";
+      case "2":
+        return "최우수회원 (BEST)";
+      case "3":
+        return "MVP회원 (EXCELLENT)";
+      default:
+        return;
+    }
+  };
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
@@ -89,6 +115,40 @@ const ManagerPage = () => {
       alert("멤버 등록 완료");
     } catch (error) {
       console.log(`멤버 등록 실패: ${error}`);
+    }
+  };
+
+  // 사용자 정보 확인
+  const checkUserInfo = async () => {
+    if (!account || account === "0x...") {
+      alert("관리자 지갑으로 먼저 연결해주세요.");
+      return;
+    }
+
+    try {
+      const result = (await BoardContract.methods
+        .getUserInfo(account)
+        .call()) as [
+        string, // userAddress
+        boolean, // isMember
+        bigint, // numPosts
+        bigint, // totalReward
+        number, // grade
+        bigint[] // badgeBalances];
+      ];
+
+      const info: InfoType = {
+        userAddress: result[0],
+        isMember: result[1],
+        numPosts: result[2].toString(),
+        totalReward: result[3].toString(),
+        grade: result[4].toString(),
+        badgeBalances: result[5].map((n: any) => n.toString()),
+      };
+
+      setUserInfo(info);
+    } catch (error) {
+      console.log(`내 정보 불러오기 실패: ${error}`);
     }
   };
 
@@ -162,6 +222,33 @@ const ManagerPage = () => {
         />
         <StyledButton onClick={registerMember}>멤버 등록</StyledButton>
       </div>
+      <div>
+        <h2>사용자 조회</h2>
+        <input
+          type="text"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          placeholder="조회할 사용자의 EOA를 입력하세요."
+        />
+        <StyledButton onClick={checkUserInfo}>조회</StyledButton>
+      </div>
+      {userInfo && (
+        <div>
+          <p>주소: {userInfo.userAddress}</p>
+          <p>멤버 여부: {userInfo.isMember ? "등록" : "미등록"}</p>
+          <p>작성한 글 수: {userInfo.numPosts}</p>
+          <p>누적 보상: {userInfo.totalReward} STK</p>
+          <p>현재 등급: {getGradeLabel(userInfo.grade)}</p>
+          <p>
+            배지 보유량:
+            <ul>
+              <li>GOOD: {userInfo.badgeBalances[0]}</li>
+              <li>BEST: {userInfo.badgeBalances[1]}</li>
+              <li>MVP: {userInfo.badgeBalances[2]}</li>
+            </ul>
+          </p>
+        </div>
+      )}
       <div>
         <h2>글 목록</h2>
         <StyledButton onClick={allPost}>글 목록</StyledButton>
