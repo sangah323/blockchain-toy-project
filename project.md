@@ -182,14 +182,20 @@ blockchain-toy-project/
 ├── project-ui/
 │   ├── public/
 │   ├── src/
-│   │   ├── components/
+│   │   ├── components/             # 화면 UI
+│   │   │   ├── UserInfoCard.tsx
+│   │   │   ├── PostList.tsx
 │   │   ├── hooks/
 │   │   │   ├── useBoardContract.ts # 컨트랙트 연결
 │   │   ├── pages/
-│   │   │   ├── manager             # 관리자 화면
+│   │   │   ├── Manager             # 관리자 화면
 │   │   │   │   ├── ManagerPage.tsx
-│   │   │   ├── user                # 사용자 화면
-│   │   ├── utils/
+│   │   │   ├── User                # 사용자 화면
+│   │   │   │   ├── UserPage.tsx
+│   │   ├── utils/                  # 비즈니스 로직
+│   │   │   │   ├── grade.ts
+│   │   │   │   ├── post.ts
+│   │   │   │   ├── userInfo.ts
 │   │   ├── abi/                    # Truffle 빌드된 ABI JSON 복사본
 │   │   └── App.js
 │   └── package.json

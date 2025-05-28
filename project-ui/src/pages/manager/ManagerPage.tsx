@@ -1,10 +1,14 @@
+import { useState } from "react";
+import { Contract } from "web3-eth-contract";
 import useBoardContract from "../../hooks/useBoardContract";
 import useSTKContract from "../../hooks/useSTKContract";
 import useBadgeContract from "../../hooks/useBadgeContract";
 import useConnectWallet from "../../hooks/useConnectWallet";
+import { fetchUserInfo } from "../../utils/userInfo";
+import { fetchAllPosts } from "../../utils/Post";
+import UserInfoCard from "../../components/UserInfoCard";
+import PostList from "../../components/PostList";
 import { StyledButton } from "../../components/Button.styled";
-import { useState } from "react";
-import { Contract } from "web3-eth-contract";
 
 const ManagerPage = () => {
   const [member, setMember] = useState(""); // 멤버 수동 등록
@@ -32,22 +36,6 @@ const ManagerPage = () => {
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
-
-  // 등급 정의
-  const getGradeLabel = (grade: string) => {
-    switch (grade) {
-      case "0":
-        return "일반회원(NOMAL)";
-      case "1":
-        return "우수회원 (GOOD)";
-      case "2":
-        return "최우수회원 (BEST)";
-      case "3":
-        return "MVP회원 (EXCELLENT)";
-      default:
-        return;
-    }
-  };
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
@@ -154,68 +142,23 @@ const ManagerPage = () => {
     }
   };
 
-  // 사용자 정보 확인
-  const checkUserInfo = async () => {
-    if (!account || account === "0x...") {
-      alert("관리자 지갑으로 먼저 연결해주세요.");
-      return;
-    }
-
+  // 사용자 정보 조회
+  const checkUser = async () => {
     try {
-      const result = (await BoardContract.methods
-        .getUserInfo(account)
-        .call()) as [
-        string, // userAddress
-        boolean, // isMember
-        bigint, // numPosts
-        bigint, // totalReward
-        number, // grade
-        bigint[] // badgeBalances];
-      ];
-
-      const info: InfoType = {
-        userAddress: result[0],
-        isMember: result[1],
-        numPosts: result[2].toString(),
-        totalReward: result[3].toString(),
-        grade: result[4].toString(),
-        badgeBalances: result[5].map((n: any) => n.toString()),
-      };
-
-      setUserInfo(info); // 사용자 정보 업데이트
-      setUser(""); // 사용자 검색 input 초기화
+      const info = await fetchUserInfo(BoardContract, user);
+      setUserInfo(info);
     } catch (error) {
-      console.log(`내 정보 불러오기 실패: ${error}`);
+      console.log(`사용자 정보 불러오기 실패: ${error}`);
     }
   };
 
-  // 모든 작성 글
-  const allPost = async () => {
+  // 모든 작성 글 조회
+  const getPosts = async () => {
     try {
-      const posts: PostType[] = [];
-      const totalPosts = await BoardContract.methods.getPostCount().call(); // 총 글 개수
-
-      for (let i = 0; i < Number(totalPosts); i++) {
-        try {
-          const post = (await BoardContract.methods.getAllPosts(i).call()) as [
-            string, // content
-            string, // user
-            string // timestamp
-          ];
-
-          posts.push({
-            content: post[0],
-            user: post[1],
-            timestamp: new Date(Number(post[2]) * 1000).toLocaleString(), // UNIX 타임 → 문자열
-          });
-        } catch (error) {
-          console.log(`글 ${i} 조회 실패: ${error}`);
-        }
-      }
-
-      setPostList(posts); // 상태 업데이트
+      const posts = await fetchAllPosts(BoardContract);
+      setPostList(posts);
     } catch (error) {
-      console.log("글 목록 전체 불러오기 실패:", error);
+      console.log(`전체 글 조회 실패 : ${error}`);
     }
   };
 
@@ -273,7 +216,7 @@ const ManagerPage = () => {
           type="text"
           value={member}
           onChange={(e) => setMember(e.target.value)}
-          placeholder="멤버로 인정할 사용자의 EOA를 입력하세요."
+          placeholder="멤버로 등록할 사용자의 EOA를 입력하세요."
         />
         <StyledButton onClick={registerMember}>멤버 등록</StyledButton>
       </div>
@@ -285,38 +228,13 @@ const ManagerPage = () => {
           onChange={(e) => setUser(e.target.value)}
           placeholder="조회할 사용자의 EOA를 입력하세요."
         />
-        <StyledButton onClick={checkUserInfo}>조회</StyledButton>
+        <StyledButton onClick={checkUser}>사용자 조회</StyledButton>
+        {userInfo && <UserInfoCard info={userInfo} />}
       </div>
-      {userInfo && (
-        <div>
-          <p>주소: {userInfo.userAddress}</p>
-          <p>멤버 여부: {userInfo.isMember ? "등록" : "미등록"}</p>
-          <p>작성한 글 수: {userInfo.numPosts}</p>
-          <p>누적 보상: {userInfo.totalReward} STK</p>
-          <p>현재 등급: {getGradeLabel(userInfo.grade)}</p>
-          <p>
-            배지 보유량:
-            <ul>
-              <li>GOOD: {userInfo.badgeBalances[0]}</li>
-              <li>BEST: {userInfo.badgeBalances[1]}</li>
-              <li>MVP: {userInfo.badgeBalances[2]}</li>
-            </ul>
-          </p>
-        </div>
-      )}
       <div>
         <h2>글 목록</h2>
-        <StyledButton onClick={allPost}>글 목록</StyledButton>
-        <ul>
-          {postList.map((post, index) => (
-            <li key={index}>
-              <p>내용: {post.content}</p>
-              <p>작성자: {post.user}</p>
-              <p>작성시간: {post.timestamp}</p>
-              <hr />
-            </li>
-          ))}
-        </ul>
+        <StyledButton onClick={getPosts}>글 목록</StyledButton>
+        <PostList posts={postList} />
       </div>
     </>
   );

@@ -1,5 +1,5 @@
-import ManagerPage from "./pages/manager/ManagerPage";
-import UserPage from "./pages/user/UserPage";
+import ManagerPage from "./pages/Manager/ManagerPage";
+import UserPage from "./pages/User/UserPage";
 
 function App() {
   return (
