@@ -14,11 +14,7 @@ contract BadgeNFT is ERC1155, Ownable {
     // 각 ID당 만들어 줘야 하나?
 
     // 등급 배지 발급
-    function mintBadge(
-        address to,
-        uint256 badgeId,
-        uint256 amount
-    ) public onlyOwner {
+    function mintBadge(address to, uint256 badgeId, uint256 amount) public {
         _mint(to, badgeId, amount, "");
     }
 

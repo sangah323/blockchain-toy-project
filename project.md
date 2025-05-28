@@ -15,6 +15,18 @@
 4. 특정 등급 조건을 만족하면 NFT 배지 발급
 5. 동일 조건을 반복 충족할 경우 해당 배지는 **누적 발급**
 
+## 관리자 흐름
+
+1. 컨트랙트 배포
+   1-1. STKToken 배포
+   1-2. BadgeNFT 배포
+   1-3. Board 배포 (STKToken, BadgeNFT, Owner 주소)
+2. 컨트랙트 권한 위임, transferOwnership()
+   2-1. STKToken 컨트랙트 권한 Board 컨트랙트에게 위임
+   2-2. BadgeNFT 컨트랙트 권한 Board 컨트랙트에게 위임
+3. STKToken mintin
+4. [사용자가 글 작성]
+
 ## 사용자 등급 및 STK 보상 구조
 
 | 등급                 | 조건                             | STK 보상 | 배지 ID     |
@@ -159,9 +171,9 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 blockchain-toy-project/
 ├── blockchain/
 │   ├── contracts/
-│   │   ├── STKToken.sol          # STK 토큰
-│   │   ├── BadgeNFT.sol          # 배지 NFT
-│   │   └── Board.sol           # 게시판 기능 및 보상 관리 (사용자+관리자)
+│   │   ├── STKToken.sol            # STK 토큰
+│   │   ├── BadgeNFT.sol            # 배지 NFT
+│   │   └── Board.sol               # 게시판 기능 및 보상 관리 (사용자+관리자)
 │   ├── migrations/
 │   ├── test/
 │   ├── build/
@@ -171,11 +183,14 @@ blockchain-toy-project/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
+│   │   ├── hooks/
+│   │   │   ├── useBoardContract.ts # 컨트랙트 연결
 │   │   ├── pages/
-│   │   │   ├── client            # 사용자 화면
-│   │   │   ├── manager           # 관리자 화면
+│   │   │   ├── manager             # 관리자 화면
+│   │   │   │   ├── ManagerPage.tsx
+│   │   │   ├── user                # 사용자 화면
 │   │   ├── utils/
-│   │   ├── abi/                  # Truffle 빌드된 ABI JSON 복사본
+│   │   ├── abi/                    # Truffle 빌드된 ABI JSON 복사본
 │   │   └── App.js
 │   └── package.json
 │

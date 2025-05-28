@@ -10,9 +10,10 @@ package-lock.json
 /dist/
 /out/
 
-# React build (client)
-client/build/
-client/.env
+# React build (project-ui)
+project-ui/build/
+project-ui/src/abi
+project-ui/.env
 
 # Truffle build (blockchain)
 blockchain/build/

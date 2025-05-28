@@ -58,7 +58,7 @@ contract Board is Ownable {
     }
 
     // [관리자] 멤버 등록 기능
-    function setMember(address _address) public {
+    function setMember(address _address) public onlyOwner {
         require(!members[_address], "Already a member"); // 멤버 여부 확인
 
         members[_address] = true;
