@@ -1,16 +1,15 @@
 import useBoardContract from "../../hooks/useBoardContract";
 import useSTKContract from "../../hooks/useSTKContract";
+import useBadgeContract from "../../hooks/useBadgeContract";
 import useConnectWallet from "../../hooks/useConnectWallet";
 import { StyledButton } from "../../components/Button.styled";
+import { useState } from "react";
 
 const ManagerPage = () => {
   const { account, connectWallet } = useConnectWallet(); // 관리자 주소
-
-  //   Board 컨트랙트 불러옴
-  const { BoardAddress, BoardContract } = useBoardContract();
-
-  //   STKToken 컨트랙트 불러옴
-  const { STKContract } = useSTKContract();
+  const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
+  const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
+  const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
@@ -18,8 +17,8 @@ const ManagerPage = () => {
     account.toLowerCase() ===
       process.env.REACT_APP_OWNER_ADDRESS?.toLowerCase();
 
-  // STKToken, BadgeNFT transferOwnership(BoardAddress)
-  const transferOwnership = async () => {
+  // STKToken transferOwnership(BoardAddress)
+  const stkTransferOwnership = async () => {
     try {
       const newOwner = BoardAddress;
       await STKContract.methods.transferOwnership(newOwner).send({
@@ -28,6 +27,19 @@ const ManagerPage = () => {
       alert("STKToken 소유권 이전 완료");
     } catch (error) {
       console.log(`STK 컨트랙트 권한 위임 실패: ${error}`);
+    }
+  };
+
+  // BadgeNFT transferOwnership(BoardAddress)
+  const badgeTransferOwnership = async () => {
+    try {
+      const newOwner = BoardAddress;
+      await BadgeContract.methods.transferOwnership(newOwner).send({
+        from: account,
+      });
+      alert("BadgeNFT 소유권 이전 완료");
+    } catch (error) {
+      console.log(`BadgeNFT 컨트랙트 권한 위임 실패: ${error}`);
     }
   };
 
@@ -47,6 +59,7 @@ const ManagerPage = () => {
     <>
       <h1>Manager Pages</h1>
       <div>
+        <h2>지갑 연결</h2>
         <StyledButton onClick={connectWallet}>지갑 연결</StyledButton>
         <p>
           {account === "0x..."
@@ -57,7 +70,16 @@ const ManagerPage = () => {
         </p>
       </div>
       <div>
-        <StyledButton onClick={transferOwnership}>STK 소유권 이전</StyledButton>
+        <h2>컨트랙트 소유권 이전</h2>
+        <StyledButton onClick={stkTransferOwnership}>
+          STK 소유권 이전
+        </StyledButton>
+        <StyledButton onClick={badgeTransferOwnership}>
+          Badge 소유권 이전
+        </StyledButton>
+      </div>
+      <div>
+        <h2>STK Token 민팅</h2>
         <StyledButton onClick={mintSTK}>STK Token 민팅</StyledButton>
         <p>Total STK Token : </p>
       </div>
