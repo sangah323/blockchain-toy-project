@@ -172,7 +172,7 @@ blockchain-toy-project/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── hooks/
-│   │   │   ├── connectWallet.ts    # 지갑, 컨트랙트 연결
+│   │   │   ├── useBoardContract.ts # 컨트랙트 연결
 │   │   ├── pages/
 │   │   │   ├── manager             # 관리자 화면
 │   │   │   │   ├── ManagerPage.tsx
