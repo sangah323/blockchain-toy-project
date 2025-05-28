@@ -10,6 +10,7 @@ const ManagerPage = () => {
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
+  const [member, setMember] = useState("");
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
@@ -55,6 +56,17 @@ const ManagerPage = () => {
     }
   };
 
+  const registerMember = async () => {
+    try {
+      await BoardContract.methods
+        .setMember(member.toLowerCase())
+        .send({ from: account });
+      alert("멤버 등록 완료");
+    } catch (error) {
+      console.log(`멤버 등록 실패: ${error}`);
+    }
+  };
+
   return (
     <>
       <h1>Manager Pages</h1>
@@ -82,6 +94,16 @@ const ManagerPage = () => {
         <h2>STK Token 민팅</h2>
         <StyledButton onClick={mintSTK}>STK Token 민팅</StyledButton>
         <p>Total STK Token : </p>
+      </div>
+      <div>
+        <h2>멤버 등록</h2>
+        <input
+          type="text"
+          value={member}
+          onChange={(e) => setMember(e.target.value)}
+          placeholder="멤버로 인정할 사용자의 EOA를 입력하세요."
+        />
+        <StyledButton onClick={registerMember}>멤버 등록</StyledButton>
       </div>
     </>
   );
