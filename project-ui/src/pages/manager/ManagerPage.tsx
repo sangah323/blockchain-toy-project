@@ -6,11 +6,12 @@ import { StyledButton } from "../../components/Button.styled";
 import { useState } from "react";
 
 const ManagerPage = () => {
+  const [member, setMember] = useState("");
+
   const { account, connectWallet } = useConnectWallet(); // 관리자 주소
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
-  const [member, setMember] = useState("");
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
