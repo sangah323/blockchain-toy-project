@@ -15,6 +15,18 @@
 4. 특정 등급 조건을 만족하면 NFT 배지 발급
 5. 동일 조건을 반복 충족할 경우 해당 배지는 **누적 발급**
 
+## 관리자 흐름
+
+1. 컨트랙트 배포
+   1-1. STKToken 배포
+   1-2. BadgeNFT 배포
+   1-3. Board 배포 (STKToken, BadgeNFT, Owner 주소)
+2. 컨트랙트 권한 위임, transferOwnership()
+   2-1. STKToken 컨트랙트 권한 Board 컨트랙트에게 위임
+   2-2. BadgeNFT 컨트랙트 권한 Board 컨트랙트에게 위임
+3. STKToken mintin
+4. [사용자가 글 작성]
+
 ## 사용자 등급 및 STK 보상 구조
 
 | 등급                 | 조건                             | STK 보상 | 배지 ID     |
