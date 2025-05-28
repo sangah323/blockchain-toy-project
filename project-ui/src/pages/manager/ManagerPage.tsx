@@ -7,18 +7,10 @@ const ManagerPage = () => {
   const { account, connectWallet } = useConnectWallet(); // 관리자 주소
 
   //   Board 컨트랙트 불러옴
-  const boardContractData = useBoardContract();
-  if (!boardContractData) {
-    return <p>Board 컨트랙트 연결 실패</p>;
-  }
-  const { BoardAddress, BoardContract } = boardContractData;
+  const { BoardAddress, BoardContract } = useBoardContract();
 
   //   STKToken 컨트랙트 불러옴
-  //   const stkContractData = useSTKContract();
-  //   if (!stkContractData) {
-  //     return <p>STK 컨트랙트 연결 실패</p>;
-  //   }
-  //   const { STKContract } = stkContractData;
+  const { STKContract } = useSTKContract();
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =
@@ -27,23 +19,23 @@ const ManagerPage = () => {
       process.env.REACT_APP_OWNER_ADDRESS?.toLowerCase();
 
   // STKToken, BadgeNFT transferOwnership(BoardAddress)
-  //   const transferOwnership = async () => {
-  //     try {
-  //       const newOwner = BoardAddress;
-  //       await STKContract.methods.transfetOwnership(newOwner).send({
-  //         from: account,
-  //       });
-  //       alert("STKToken 소유권 이전 완료");
-  //     } catch (error) {
-  //       console.log(`STK 컨트랙트 권한 위임 실패: ${error}`);
-  //     }
-  //   };
+  const transferOwnership = async () => {
+    try {
+      const newOwner = BoardAddress;
+      await STKContract.methods.transferOwnership(newOwner).send({
+        from: account,
+      });
+      alert("STKToken 소유권 이전 완료");
+    } catch (error) {
+      console.log(`STK 컨트랙트 권한 위임 실패: ${error}`);
+    }
+  };
 
   // STK 민팅, transferOwnership 먼저 해야 함-!
   const mintSTK = async () => {
     try {
       await BoardContract.methods.mintSTK().send({
-        from: BoardAddress,
+        from: account,
       });
       alert("STK Token 민팅 완료");
     } catch (error) {
@@ -65,7 +57,7 @@ const ManagerPage = () => {
         </p>
       </div>
       <div>
-        {/* <StyledButton onClick={transferOwnership}>STK 소유권 이전</StyledButton> */}
+        <StyledButton onClick={transferOwnership}>STK 소유권 이전</StyledButton>
         <StyledButton onClick={mintSTK}>STK Token 민팅</StyledButton>
         <p>Total STK Token : </p>
       </div>
