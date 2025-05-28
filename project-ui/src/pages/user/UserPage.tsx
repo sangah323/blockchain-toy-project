@@ -25,8 +25,8 @@ const UserPage = () => {
   const { account, connectWallet } = useConnectWallet(); // 지갑 연결
   const { BoardContract } = useBoardContract(); // Board 컨트랙트 불러옴
 
+  // 등급 정의
   const getGradeLabel = (grade: string) => {
-    // 등급 정의
     switch (grade) {
       case "0":
         return "일반회원(NOMAL)";
@@ -101,12 +101,8 @@ const UserPage = () => {
 
   const allPost = async () => {
     try {
-      console.log("dd");
       const posts: PostType[] = [];
-      console.log("aaa");
       const totalPosts = await BoardContract.methods.getPostCount().call(); // 총 글 개수
-      console.log("e");
-      console.log("totalPosts", totalPosts);
 
       for (let i = 0; i < Number(totalPosts); i++) {
         try {
@@ -115,7 +111,6 @@ const UserPage = () => {
             string, // user
             string // timestamp
           ];
-          console.log(post);
 
           posts.push({
             content: post[0],

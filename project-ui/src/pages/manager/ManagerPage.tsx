@@ -6,7 +6,15 @@ import { StyledButton } from "../../components/Button.styled";
 import { useState } from "react";
 
 const ManagerPage = () => {
-  const [member, setMember] = useState("");
+  const [member, setMember] = useState(""); // 멤버 수동 등록
+  const [postList, setPostList] = useState<PostType[]>([]); // 모든 작성 글
+  type PostType = {
+    content: string;
+    user: string;
+    timestamp: string;
+  };
+  const [totalSTK, setTotalSTK] = useState(""); // STK 총 발행량
+  const [balance, setBalance] = useState(""); // STK 잔액
 
   const { account, connectWallet } = useConnectWallet(); // 관리자 주소
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
@@ -51,12 +59,28 @@ const ManagerPage = () => {
       await BoardContract.methods.mintSTK().send({
         from: account,
       });
+      await stkStatus(); // STK 상태 업데이트
       alert("STK Token 민팅 완료");
     } catch (error) {
       console.log(`STK Token 민팅 실패:${error}`);
     }
   };
 
+  // STK Token 총 발행량, 잔액
+  const stkStatus = async () => {
+    try {
+      const total = String(await STKContract.methods.totalSupply().call());
+      const bal = String(
+        await STKContract.methods.balanceOf(BoardAddress).call()
+      );
+      setTotalSTK(total);
+      setBalance(bal);
+    } catch (error) {
+      console.log(`STK Token 상태 조회 실패 : ${error}`);
+    }
+  };
+
+  // 멤버 수동 등록
   const registerMember = async () => {
     try {
       await BoardContract.methods
@@ -65,6 +89,36 @@ const ManagerPage = () => {
       alert("멤버 등록 완료");
     } catch (error) {
       console.log(`멤버 등록 실패: ${error}`);
+    }
+  };
+
+  // 모든 작성 글
+  const allPost = async () => {
+    try {
+      const posts: PostType[] = [];
+      const totalPosts = await BoardContract.methods.getPostCount().call(); // 총 글 개수
+
+      for (let i = 0; i < Number(totalPosts); i++) {
+        try {
+          const post = (await BoardContract.methods.getAllPosts(i).call()) as [
+            string, // content
+            string, // user
+            string // timestamp
+          ];
+
+          posts.push({
+            content: post[0],
+            user: post[1],
+            timestamp: new Date(Number(post[2]) * 1000).toLocaleString(), // UNIX 타임 → 문자열
+          });
+        } catch (error) {
+          console.log(`글 ${i} 조회 실패: ${error}`);
+        }
+      }
+
+      setPostList(posts); // 상태 업데이트
+    } catch (error) {
+      console.log("글 목록 전체 불러오기 실패:", error);
     }
   };
 
@@ -79,7 +133,7 @@ const ManagerPage = () => {
             ? "지갑을 연결하세요."
             : isOwner
             ? `접속된 관리자 지갑: ${account}`
-            : "접속된 지갑은 관리자 권한이 없습니다."}
+            : "관리자 권한이 없는 지갑입니다."}
         </p>
       </div>
       <div>
@@ -92,9 +146,11 @@ const ManagerPage = () => {
         </StyledButton>
       </div>
       <div>
-        <h2>STK Token 민팅</h2>
+        <h2>STK Token</h2>
         <StyledButton onClick={mintSTK}>STK Token 민팅</StyledButton>
-        <p>Total STK Token : </p>
+        <StyledButton onClick={stkStatus}>STK 상태</StyledButton>
+        <p>총 발행량 : {totalSTK}</p>
+        <p>잔액 : {balance} </p>
       </div>
       <div>
         <h2>멤버 등록</h2>
@@ -105,6 +161,20 @@ const ManagerPage = () => {
           placeholder="멤버로 인정할 사용자의 EOA를 입력하세요."
         />
         <StyledButton onClick={registerMember}>멤버 등록</StyledButton>
+      </div>
+      <div>
+        <h2>글 목록</h2>
+        <StyledButton onClick={allPost}>글 목록</StyledButton>
+        <ul>
+          {postList.map((post, index) => (
+            <li key={index}>
+              <p>내용: {post.content}</p>
+              <p>작성자: {post.user}</p>
+              <p>작성시간: {post.timestamp}</p>
+              <hr />
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
