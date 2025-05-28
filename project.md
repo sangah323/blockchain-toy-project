@@ -159,9 +159,9 @@ ERC-1155는 Ethereum에서 사용하는 **멀티 토큰 표준(Multi Token Stand
 blockchain-toy-project/
 ├── blockchain/
 │   ├── contracts/
-│   │   ├── STKToken.sol          # STK 토큰
-│   │   ├── BadgeNFT.sol          # 배지 NFT
-│   │   └── Board.sol           # 게시판 기능 및 보상 관리 (사용자+관리자)
+│   │   ├── STKToken.sol            # STK 토큰
+│   │   ├── BadgeNFT.sol            # 배지 NFT
+│   │   └── Board.sol               # 게시판 기능 및 보상 관리 (사용자+관리자)
 │   ├── migrations/
 │   ├── test/
 │   ├── build/
@@ -171,11 +171,14 @@ blockchain-toy-project/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
+│   │   ├── hooks/
+│   │   │   ├── connectWallet.ts    # 지갑, 컨트랙트 연결
 │   │   ├── pages/
-│   │   │   ├── client            # 사용자 화면
-│   │   │   ├── manager           # 관리자 화면
+│   │   │   ├── manager             # 관리자 화면
+│   │   │   │   ├── ManagerPage.tsx
+│   │   │   ├── user                # 사용자 화면
 │   │   ├── utils/
-│   │   ├── abi/                  # Truffle 빌드된 ABI JSON 복사본
+│   │   ├── abi/                    # Truffle 빌드된 ABI JSON 복사본
 │   │   └── App.js
 │   └── package.json
 │
