@@ -1,4 +1,4 @@
-import connectWallet from "../../hooks/connectWallet";
+import useBoardContract from "../../hooks/useBoardContract";
 
 const ManagerPage = () => {
   return (
