@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import useConnectWallet from "../../hooks/useConnectWallet";
+import { useWallet } from "../../contexts/WalletContext";
 import { StyledConnect } from "../../styles/StyledManager";
 import { StyledButton } from "../../components/Button.styled";
 
 const ConnectWalletPage = () => {
-  const { account, connectWallet } = useConnectWallet(); // 관리자 주소
+  const { account, connectWallet } = useWallet(); // 관리자 주소
 
   // Owner(관리자) 주소와 일치하는지 확인
   const isOwner =

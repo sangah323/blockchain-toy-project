@@ -1,11 +1,11 @@
 import { StyledWallet } from "../styles/StyledUser";
-import useConnectWallet from "../hooks/useConnectWallet";
+import { useWallet } from "../contexts/WalletContext";
 import { StyledButton } from "../components/Button.styled";
 
 const circle = "./circle.png";
 
 export const ContentsWallet = () => {
-  const { account, connectWallet } = useConnectWallet(); // 지갑 연결
+  const { account, connectWallet } = useWallet(); // 지갑 연결
 
   return (
     <StyledWallet id="connect">
