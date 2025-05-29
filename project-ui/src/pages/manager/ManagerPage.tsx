@@ -3,7 +3,7 @@ import { Contract } from "web3-eth-contract";
 import useBoardContract from "../../hooks/useBoardContract";
 import useSTKContract from "../../hooks/useSTKContract";
 import useBadgeContract from "../../hooks/useBadgeContract";
-import useConnectWallet from "../../hooks/useConnectWallet";
+import { useWallet } from "../../contexts/WalletContext";
 import { fetchUserInfo } from "../../utils/userInfo";
 import { fetchAllPosts } from "../../utils/Post";
 import UserInfoCard from "../../components/UserInfoCard";
@@ -32,7 +32,7 @@ const ManagerPage = () => {
   const [balance, setBalance] = useState(""); // STK 잔액
   const [mintEvents, setMintEvents] = useState<any[]>([]); // BadgeNFT 발급 내역
 
-  const { account, connectWallet } = useConnectWallet(); // 관리자 주소
+  const { account, connectWallet } = useWallet(); // 관리자 주소
   const { BoardAddress, BoardContract } = useBoardContract(); //   Board 컨트랙트 불러옴
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
