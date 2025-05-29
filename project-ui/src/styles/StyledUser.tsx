@@ -38,6 +38,7 @@ export const StyledPost = styled.div`
 
   .post-box {
     display: flex;
+    justify-content: space-between;
     gap: 30px;
   }
 

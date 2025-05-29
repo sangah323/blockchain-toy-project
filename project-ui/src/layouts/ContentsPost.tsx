@@ -38,6 +38,7 @@ const ContentsPost = ({ onPost }: { onPost: () => void }) => {
           id="context"
           type="text"
           value={context}
+          placeholder="메세지를 작성해주세요."
           onChange={(e) => setContext(e.target.value)}
         />
         <StyledButton onClick={post}>작성</StyledButton>
