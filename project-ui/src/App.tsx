@@ -9,7 +9,6 @@ import { WalletProvider } from "./contexts/WalletContext";
 // import ManagerPage from "./pages/Manager/ManagerPage";
 import UserPage from "./pages/User/UserPage";
 import MyInfo from "./pages/User/MyInfo";
-import Posts from "./pages/User/Posts";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
           {/* 공통 Layout */}
           <Route path="/" element={<Layout />}>
             <Route path="/user" element={<UserPage />} />
-            <Route path="/posts" element={<Posts />} />
             <Route path="/myInfo" element={<MyInfo />} />
             {/* <Route path="/manager" element={<ManagerPage />} /> */}
           </Route>

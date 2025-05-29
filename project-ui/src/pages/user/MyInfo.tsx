@@ -4,7 +4,6 @@ import useBoardContract from "../../hooks/useBoardContract";
 import { fetchUserInfo } from "../../utils/userInfo";
 import UserInfoCard from "../../components/UserInfoCard";
 import { StyledInfo } from "../../styles/StyledUser";
-import { StyledButton } from "../../components/Button.styled";
 
 const MyInfo = () => {
   const [myInfo, setMyInfo] = useState<InfoType | null>(null); // 내 정보
@@ -43,7 +42,7 @@ const MyInfo = () => {
       {myInfo ? (
         <UserInfoCard info={myInfo} />
       ) : (
-        <p>사용자 정보를 불러오는 중입니다.</p>
+        <p>사용자 정보를 불러오는 중입니다..</p>
       )}
     </StyledInfo>
   );

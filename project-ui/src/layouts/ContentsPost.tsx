@@ -1,17 +1,14 @@
-// import React from "react";
+import { useState } from "react";
 import Web3 from "web3";
 import { useWallet } from "../contexts/WalletContext";
 import { StyledPost } from "../styles/StyledUser";
-import useBoardContract from "../hooks/useBoardContract";
 import { StyledButton } from "../components/Button.styled";
-import { useState } from "react";
+import useBoardContract from "../hooks/useBoardContract";
 
-export const ContentsPost = () => {
+const ContentsPost = ({ onPost }: { onPost: () => void }) => {
   const [context, setContext] = useState(""); // 사용자 글 작성
-
+  const { account } = useWallet(); // 주소 불러옴
   const { BoardContract } = useBoardContract(); // Board 컨트랙트 불러옴
-
-  const { account } = useWallet();
 
   const post = async () => {
     if (!context || context.trim() === "") {
@@ -28,6 +25,7 @@ export const ContentsPost = () => {
         .send({ from: account, value: web3.utils.toWei("0.5", "ether") });
       alert("글 등록 완료. 글 등록 보상을 확인해주세요.");
       setContext(""); // input 초기화
+      onPost(); // 글 목록 다시 불러오기
     } catch (error) {
       console.log(`글 작성 실패: ${error}`);
     }
@@ -48,3 +46,5 @@ export const ContentsPost = () => {
     </StyledPost>
   );
 };
+
+export default ContentsPost;

@@ -5,7 +5,6 @@ const UserMenu = () => {
   return (
     <StyledMenu>
       <NavLink to="/user">메인</NavLink>
-      <NavLink to="/posts">글 목록</NavLink>
       <NavLink to="/myInfo">내 정보</NavLink>
     </StyledMenu>
   );
