@@ -34,4 +34,10 @@ export const StyledMenu = styled.nav`
       color: #111827;
     }
   }
+
+  #manager {
+    position: absolute;
+    bottom: 130px;
+    right: 30px;
+  }
 `;
