@@ -20,8 +20,6 @@ const MyInfo = () => {
   const { account } = useWallet();
   const { BoardContract } = useBoardContract(); // Board 컨트랙트 불러옴
 
-  console.log("account", account);
-
   // 내 정보 조회
   const checkMyInfo = async () => {
     if (!account || account === "0x...") {

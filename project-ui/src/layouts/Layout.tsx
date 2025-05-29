@@ -3,9 +3,11 @@ import UserMenu from "./UserMenu";
 
 const Layout = () => {
   return (
-    <div className="app-container">
-      <UserMenu /> {/* 항상 보일 메뉴 */}
-      <Outlet /> {/* Outlet으로 라우팅된 페이지 렌더링 */}
+    <div style={{ display: "flex" }}>
+      <UserMenu />
+      <main style={{ marginLeft: "240px", padding: "40px", flex: 1 }}>
+        <Outlet />
+      </main>
     </div>
   );
 };

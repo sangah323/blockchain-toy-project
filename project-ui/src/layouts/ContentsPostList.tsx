@@ -1,4 +1,5 @@
 import { StyledPostList } from "../styles/StyledUser";
+import { PostListWrapper } from "../styles/StyledUser";
 import useBoardContract from "../hooks/useBoardContract";
 import { fetchAllPosts } from "../utils/Post";
 import PostList from "../components/PostList";
@@ -27,11 +28,11 @@ export const ContentsPostList = () => {
 
   return (
     <StyledPostList>
-      <div>
-        <h2>글 목록</h2>
-        <StyledButton onClick={getPosts}>글 목록</StyledButton>
+      <h2>글 목록</h2>
+      <StyledButton onClick={getPosts}>글 목록</StyledButton>
+      <PostListWrapper>
         <PostList posts={postList} />
-      </div>
+      </PostListWrapper>
     </StyledPostList>
   );
 };

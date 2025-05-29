@@ -1,7 +1,6 @@
 // import React from "react";
 import Web3 from "web3";
 import { useWallet } from "../contexts/WalletContext";
-import { ContentsPostList } from "../layouts/ContentsPostList";
 import { StyledPost } from "../styles/StyledUser";
 import useBoardContract from "../hooks/useBoardContract";
 import { StyledButton } from "../components/Button.styled";
@@ -36,20 +35,16 @@ export const ContentsPost = () => {
 
   return (
     <StyledPost>
-      <div id="postArea">
-        <h2>글 작성</h2>
-        <div className="post-box">
-          <input
-            id="context"
-            type="text"
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-          />
-          <StyledButton onClick={post}>작성</StyledButton>
-        </div>
+      <h2>글 작성</h2>
+      <div className="post-box">
+        <input
+          id="context"
+          type="text"
+          value={context}
+          onChange={(e) => setContext(e.target.value)}
+        />
+        <StyledButton onClick={post}>작성</StyledButton>
       </div>
-
-      <ContentsPostList />
     </StyledPost>
   );
 };

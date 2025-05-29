@@ -1,26 +1,37 @@
 import styled from "@emotion/styled";
-// import { NavLink } from "react-router-dom";
 
 export const StyledMenu = styled.nav`
-  width: 300px;
-  height: 100%;
+  width: 240px;
+  height: 100vh;
   position: fixed;
-  border: 1px solid red;
+  top: 0;
+  left: 0;
+  padding: 40px 20px;
+  background-color: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.03);
 
   a {
     font-family: "Pretendard-Medium";
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    padding: 10px 12px;
-    color: #4b5563;
-    transition: color 0.3s ease;
-  }
+    font-size: 20px;
+    color: #6b7280;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
 
-  a:hover {
-    color: #1f2937;
-    font-weight: 700;
+    &.active {
+      background-color: #e5e7eb;
+      color: #111827;
+      font-weight: 700;
+    }
+
+    &:hover {
+      background-color: #e5e7eb;
+      color: #111827;
+    }
   }
 `;

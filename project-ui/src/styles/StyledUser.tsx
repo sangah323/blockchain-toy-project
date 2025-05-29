@@ -3,11 +3,12 @@ import styled from "@emotion/styled";
 export const StyledWallet = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
   display: flex;
-  gap: 50px;
+  gap: 100px;
   border: 1px solid #9ca3af;
   border-radius: 10px;
+  box-sizing: border-box;
 
   .circle-img {
     width: 200px;
@@ -23,13 +24,15 @@ export const StyledWallet = styled.div`
 export const StyledPost = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 50px;
   padding: 20px;
   border: 1px solid #9ca3af;
   border-radius: 10px;
+  box-sizing: border-box;
 
   #postArea {
     margin: 0 auto;
-    border: 1px solid #9ca3af;
+    /* border: 1px solid #9ca3af; */
     border-radius: 10px;
   }
 
@@ -59,6 +62,25 @@ export const StyledPostList = styled.div`
   #context {
     width: 1000px;
     height: 100px;
+  }
+`;
+
+export const PostListWrapper = styled.div`
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    background: #eef1f6;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  li:hover {
+    background: #dde4ec;
   }
 `;
 
