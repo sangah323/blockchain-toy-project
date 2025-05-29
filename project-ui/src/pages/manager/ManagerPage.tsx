@@ -37,12 +37,6 @@ const ManagerPage = () => {
   const { STKContract } = useSTKContract(); //   STKToken 컨트랙트 불러옴
   const { BadgeContract } = useBadgeContract(); // BadgeNFT 컨트랙트 불러옴
 
-  // Owner(관리자) 주소와 일치하는지 확인
-  const isOwner =
-    account !== "0x..." &&
-    account.toLowerCase() ===
-      process.env.REACT_APP_OWNER_ADDRESS?.toLowerCase();
-
   // STKToken transferOwnership(BoardAddress)
   const stkTransferOwnership = async () => {
     try {
@@ -166,15 +160,8 @@ const ManagerPage = () => {
     <>
       <h1>Manager Pages</h1>
       <div>
-        <h2>지갑 연결</h2>
-        <StyledButton onClick={connectWallet}>지갑 연결</StyledButton>
-        <p>
-          {account === "0x..."
-            ? "지갑을 연결하세요."
-            : isOwner
-            ? `접속된 관리자 지갑: ${account}`
-            : "관리자 권한이 없는 지갑입니다."}
-        </p>
+        <h4>연결된 관리자 지갑 :</h4>
+        <h3>${account}</h3>
       </div>
       <div>
         <h2>컨트랙트 소유권 이전</h2>
