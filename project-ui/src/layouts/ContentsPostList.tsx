@@ -12,7 +12,7 @@ type Props = {
 const ContentsPostList = ({ postList }: Props) => {
   return (
     <StyledPostList>
-      <h2>글 목록</h2>
+      <h2>목록</h2>
       <PostListWrapper>
         <PostList posts={postList} />
       </PostListWrapper>

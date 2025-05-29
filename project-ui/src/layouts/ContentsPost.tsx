@@ -33,7 +33,6 @@ const ContentsPost = ({ onPost }: { onPost: () => void }) => {
 
   return (
     <StyledPost>
-      <h2>글 작성</h2>
       <div className="post-box">
         <input
           id="context"

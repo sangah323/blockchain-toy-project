@@ -15,7 +15,7 @@ function App() {
     <WalletProvider>
       <Router>
         <Routes>
-          {/* 기본 루트 */}
+          {/* 기본 루트로 들어가도 /user로 이동하기*/}
           <Route path="/" element={<Navigate to="/user" />} />
 
           {/* 공통 Layout */}

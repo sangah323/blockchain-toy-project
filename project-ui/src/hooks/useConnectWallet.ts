@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Web3 from "web3";
+// import Web3 from "web3";
 
 declare global {
   interface Window {
@@ -8,37 +8,42 @@ declare global {
 }
 
 const useConnectWallet = () => {
-  const [account, setAccount] = useState<string>("0x...");
+  const [account, setAccount] = useState("0x...");
 
   const connectWallet = async () => {
     if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setAccount(accounts[0]);
-      } catch (error) {
-        console.log("지갑 연결 실패", error);
-      }
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setAccount(accounts[0]);
+    } else {
+      alert("메타마스크가 설치되어 있지 않습니다.");
     }
   };
 
+  // 주소 변경 감지 후 재랜더
   useEffect(() => {
-    const loadAccount = async () => {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setAccount(accounts[0]);
-      }
-    };
-    loadAccount();
+    if (window.ethereum) {
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        } else {
+          setAccount("0x...");
+        }
+      };
+
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    }
   }, []);
 
-  return {
-    account,
-    connectWallet,
-  };
+  return { account, connectWallet };
 };
 
 export default useConnectWallet;
