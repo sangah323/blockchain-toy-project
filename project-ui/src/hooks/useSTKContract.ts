@@ -12,24 +12,19 @@ interface UseSTKContractResult {
   STKContract: Contract<typeof STKTokenABI.abi>;
 }
 
-const useSTKContract = (): UseSTKContractResult | undefined => {
-  try {
-    const web3 = new Web3(window.ethereum); // web3 인스턴스 생성
+const useSTKContract = (): UseSTKContractResult => {
+  const web3 = new Web3(window.ethereum); // web3 인스턴스 생성
 
-    // 실제 배포된 STKToken CA
-    const STKAddress = "0x959011c81e1da662F42CDCda0e778043B1C98d3e";
+  // 실제 배포된 STKToken CA
+  const STKAddress = "0x3d642d427D801d80051eac50c191c9288E28fb0c";
 
-    // STKToken 컨트랙트 인스턴스 생성
-    const STKContract = new web3.eth.Contract(
-      STKTokenABI.abi as any[],
-      STKAddress
-    );
+  // STKToken 컨트랙트 인스턴스 생성
+  const STKContract = new web3.eth.Contract(
+    STKTokenABI.abi as any[],
+    STKAddress
+  );
 
-    return { STKContract };
-  } catch (error) {
-    console.log(`STKToken 컨트랙트 연결 실패: ${error}`);
-    return undefined;
-  }
+  return { STKContract };
 };
 
 export default useSTKContract;

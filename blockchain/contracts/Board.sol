@@ -98,8 +98,8 @@ contract Board is Ownable {
         uint256 reward = userReward[user];
 
         if (post >= 20 && reward >= 100) return (Grade.MVP, 2); // MVP
-        if (post >= 10 && reward >= 10) return (Grade.GOOD, 1); // BEST
-        if (post >= 3 && reward >= 3) return (Grade.BEST, 0); // GOOD
+        if (post >= 10 && reward >= 10) return (Grade.BEST, 1); // BEST
+        if (post >= 3 && reward >= 3) return (Grade.GOOD, 0); // GOOD
         return (Grade.NOMAL, 999); // 일반 회원 (배지 없음)
     }
 
@@ -181,5 +181,9 @@ contract Board is Ownable {
 
         Post storage p = posts[postId];
         return (p.content, p.user, p.timestamp);
+    }
+
+    function getPostCount() public view returns (uint256) {
+        return postCount;
     }
 }
