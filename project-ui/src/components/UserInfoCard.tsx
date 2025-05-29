@@ -1,8 +1,9 @@
 import { getGrade } from "../utils/grade";
+import { StyledInfoCard } from "../styles/StyledUser";
 
 // UI 상 사용자 정보 조회
 const UserInfoCard = ({ info }: { info: any }) => (
-  <div>
+  <StyledInfoCard>
     <p>주소: {info.userAddress}</p>
     <p>멤버 여부: {info.isMember ? "등록" : "미등록"}</p>
     <p>작성 글 수: {info.numPosts}</p>
@@ -16,6 +17,6 @@ const UserInfoCard = ({ info }: { info: any }) => (
         <li>MVP: {info.badgeBalances[2]}</li>
       </ul>
     </p>
-  </div>
+  </StyledInfoCard>
 );
 export default UserInfoCard;

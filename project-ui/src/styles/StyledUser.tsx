@@ -93,3 +93,35 @@ export const StyledInfo = styled.div`
   border: 1px solid #9ca3af;
   border-radius: 10px;
 `;
+
+export const StyledInfoCard = styled.div`
+  flex: 1;
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #374151;
+  }
+
+  ul {
+    margin-top: 10px;
+    padding-left: 20px;
+  }
+
+  li {
+    font-size: 16px;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+`;

@@ -10,7 +10,6 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   const { account, connectWallet } = useConnectWallet();
-  console.log("Context account", account);
 
   return (
     <WalletContext.Provider value={{ account, connectWallet }}>

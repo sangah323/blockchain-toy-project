@@ -21,14 +21,15 @@ const useConnectWallet = () => {
     }
   };
 
-  // 주소 변경 감지 후 재랜더
+  // 계정 변경 시 재랜더
   useEffect(() => {
     if (window.ethereum) {
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
+          // 계정 연결
           setAccount(accounts[0]);
         } else {
-          setAccount("0x...");
+          setAccount("0x..."); // 계정 미연결
         }
       };
 
