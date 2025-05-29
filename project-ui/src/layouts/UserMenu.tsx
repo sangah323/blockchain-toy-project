@@ -6,7 +6,7 @@ const UserMenu = () => {
     <StyledMenu>
       <NavLink to="/user">메인</NavLink>
       <NavLink to="/myInfo">내 정보</NavLink>
-      <NavLink to="/manager" id="manager">
+      <NavLink to="/connect" id="manager">
         관리자 전용
       </NavLink>
     </StyledMenu>

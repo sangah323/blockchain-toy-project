@@ -15,7 +15,6 @@ export const StyledMenu = styled.nav`
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.03);
 
   a {
-    font-family: "Pretendard-Medium";
     text-decoration: none;
     font-size: 20px;
     color: #6b7280;

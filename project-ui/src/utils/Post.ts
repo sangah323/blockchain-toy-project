@@ -1,7 +1,7 @@
 // 누적 작성 글
 export const fetchAllPosts = async (contract: any) => {
   const total = await contract.methods.getPostCount().call(); // 누적 글 수
-  const posts = [];
+  const posts = []; // 배열 형태로 글 저장
 
   for (let i = 0; i < Number(total); i++) {
     const post = (await contract.methods.getAllPosts(i).call()) as [

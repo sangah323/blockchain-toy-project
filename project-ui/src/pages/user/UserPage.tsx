@@ -12,8 +12,8 @@ type PostType = {
 };
 
 const UserPage = () => {
-  const [postList, setPostList] = useState<PostType[]>([]);
-  const { BoardContract } = useBoardContract();
+  const [postList, setPostList] = useState<PostType[]>([]); // 글 목록
+  const { BoardContract } = useBoardContract(); // Board 컨트랙트 불러옴
 
   // 글 목록 불러옴
   const fetchPosts = async () => {
@@ -25,7 +25,7 @@ const UserPage = () => {
     }
   };
 
-  // 컴포넌트 마운드 시 목록 재랜더링
+  // 컴포넌트 마운트 시 목록 렌더
   useEffect(() => {
     fetchPosts();
   }, []);
