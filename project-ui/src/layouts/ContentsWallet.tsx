@@ -1,4 +1,3 @@
-// import React from "react";
 import { StyledWallet } from "../styles/StyledUser";
 import useConnectWallet from "../hooks/useConnectWallet";
 import { StyledButton } from "../components/Button.styled";
